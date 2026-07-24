@@ -19,6 +19,7 @@
     "prepare": "husky",
     "test": "vitest run",
     "test:watch": "vitest",
+    "postinstall": "prisma generate",
     "test:e2e": "playwright test"
   },
   "dependencies": {
