@@ -1,44 +1,32 @@
-@import 'tailwindcss';
+/* ===========================================================
+   Sweet Treat — pixel bakery prototype
+   Global tokens + base styles
+   =========================================================== */
 
 :root {
-  /* theme: Strawberry Milk (default) */
-  --bg: #fff7e6;
-  --bg-2: #fef3da;
-  --cream: #fffdf5;
-  --ink: #6b4a3a;
-  --ink-soft: #a98a78;
-  --primary: #ff9ec4;
-  --primary-d: #e86fa2;
-  --accent: #8fd0f5;
+  /* --- theme colors (overridden by Tweaks via JS) --- */
+  --bg: #fff7e6; /* page wash */
+  --bg-2: #fef3da; /* alt panel wash */
+  --cream: #fffdf5; /* card surface */
+  --ink: #6b4a3a; /* primary text (warm brown) */
+  --ink-soft: #a98a78; /* secondary text */
+  --primary: #ff9ec4; /* candy pink */
+  --primary-d: #e86fa2; /* pink pressed/border */
+  --accent: #8fd0f5; /* sky blue */
   --accent-d: #4ea7e0;
   --yellow: #ffe17a;
   --mint: #b9e8c8;
-  --line: #e6cdb4;
-  --shadow: #d9b08c;
+  --line: #e6cdb4; /* hairline / pixel border */
+  --shadow: #d9b08c; /* hard shadow color */
   --good: #7ec98f;
   --star: #ffcf3f;
 
-  --pixel: var(--font-press-start), monospace;
-  --body: var(--font-quicksand), system-ui, sans-serif;
-  --px: 4px;
-}
+  /* fonts */
+  --pixel: 'Press Start 2P', monospace;
+  --body: 'M PLUS Rounded 1c', system-ui, sans-serif;
 
-/* Tailwind theme configuration */
-:root {
-  --color-bg: var(--bg);
-  --color-bg-2: var(--bg-2);
-  --color-cream: var(--cream);
-  --color-ink: var(--ink);
-  --color-ink-soft: var(--ink-soft);
-  --color-primary: var(--primary);
-  --color-primary-d: var(--primary-d);
-  --color-accent: var(--accent);
-  --color-accent-d: var(--accent-d);
-  --color-yellow: var(--yellow);
-  --color-mint: var(--mint);
-  --color-line: var(--line);
-  --font-pixel: var(--pixel);
-  --font-body: var(--body);
+  /* pixel unit */
+  --px: 4px;
 }
 
 * {
@@ -52,16 +40,20 @@ body {
   background: var(--bg);
   color: var(--ink);
   font-family: var(--body);
-}
-
-body {
-  background-image: radial-gradient(var(--line) 1px, transparent 1px);
-  background-size: 16px 16px;
+  -webkit-font-smoothing: antialiased;
 }
 
 img {
   image-rendering: pixelated;
 }
+
+/* subtle pixel-dot texture on the page */
+body {
+  background-image: radial-gradient(var(--line) 1px, transparent 1px);
+  background-size: 16px 16px;
+  background-position: 0 0;
+}
+
 button {
   font-family: inherit;
   cursor: pointer;
@@ -70,11 +62,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
 ::selection {
   background: var(--primary);
   color: #fff;
 }
 
+/* ---- pixel scrollbar ---- */
 ::-webkit-scrollbar {
   width: 14px;
   height: 14px;
@@ -87,34 +81,61 @@ a {
   border: 3px solid var(--bg-2);
 }
 
-/* ---- pixel primitives ---- */
+/* ===========================================================
+   Pixel primitives
+   =========================================================== */
+
+/* A chunky pixel border via layered box-shadows (stepped corners) */
+.pixel-box {
+  position: relative;
+  background: var(--cream);
+  /* stepped border: notch the 4 corners with bg-colored squares */
+  box-shadow:
+    0 calc(-1 * var(--px)) 0 0 var(--ink-border, #2a1d16),
+    0 var(--px) 0 0 var(--ink-border, #2a1d16),
+    calc(-1 * var(--px)) 0 0 0 var(--ink-border, #2a1d16),
+    var(--px) 0 0 0 var(--ink-border, #2a1d16),
+    var(--px) var(--px) 0 0 var(--shadow);
+}
+
+/* Simpler reusable pixel-frame card */
 .frame {
   background: var(--cream);
   border: var(--px) solid var(--ink);
   box-shadow: 6px 6px 0 0 var(--shadow);
   border-radius: 2px;
 }
+
 .frame-soft {
   background: var(--cream);
   border: 3px solid var(--line);
   box-shadow: 4px 4px 0 0 var(--line);
 }
+
+/* Pixel headings */
 .pixel-text {
   font-family: var(--pixel);
   line-height: 1.5;
   letter-spacing: 0.5px;
+  text-transform: none;
 }
+
+/* utility */
 .shadow-hard {
   box-shadow: 6px 6px 0 0 var(--shadow);
 }
+.no-select {
+  user-select: none;
+}
 
+/* fade/pop entrance */
 @keyframes pop-in {
   0% {
     transform: translateY(8px) scale(0.98);
     opacity: 0;
   }
   100% {
-    transform: none;
+    transform: translateY(0) scale(1);
     opacity: 1;
   }
 }
@@ -133,19 +154,54 @@ a {
 }
 .float {
   animation: float-y 3s ease-in-out infinite;
-}
-.bob:hover {
-  animation: float-y 1.2s ease-in-out infinite;
+  animation-play-state: var(--floaty, running);
 }
 
-.pixel-btn {
-  will-change: transform;
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
 }
+
+/* clouds drifting */
+@keyframes drift {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cloud-strip {
+  position: absolute;
+  left: 0;
+  display: flex;
+  width: max-content;
+  animation-name: drift;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  pointer-events: none;
+}
+
+/* button press */
 .pixel-btn:active:not(:disabled) {
   transform: translate(3px, 3px);
   box-shadow: 1px 1px 0 0 currentColor !important;
 }
+.pixel-btn {
+  will-change: transform;
+}
 
+.qty-btn:active {
+  transform: translateY(1px);
+}
+
+/* nav link */
 .nav-link {
   font-family: var(--pixel);
   font-size: 10px;
@@ -168,6 +224,7 @@ a {
   border-color: var(--primary-d);
 }
 
+/* product card hover */
 .treat-card {
   transition:
     transform 0.14s cubic-bezier(0.2, 0.9, 0.3, 1.3),
@@ -183,6 +240,7 @@ a {
   box-shadow: 3px 3px 0 0 var(--shadow);
 }
 
+/* category chip */
 .chip {
   font-family: var(--pixel);
   font-size: 9px;
@@ -207,6 +265,12 @@ a {
   box-shadow: 3px 3px 0 0 var(--primary-d);
 }
 
+/* sprite gentle hover bob */
+.bob:hover {
+  animation: float-y 1.2s ease-in-out infinite;
+}
+
+/* checkered footer top */
 .checker {
   height: 16px;
   background-image:

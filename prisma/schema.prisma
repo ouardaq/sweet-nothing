@@ -21,4 +21,9 @@ model Product {
   stock       Int      @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  spriteKey   String   @default("mochi")
+  spriteSwap  Json?
+  flavor      String?
+  tag         String?
+  category    String?
 }

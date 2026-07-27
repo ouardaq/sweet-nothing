@@ -45,3 +45,6 @@ next-env.d.ts
 # Playwright
 test-results/
 playwright-report/
+
+# design reference (generated, large)
+design/sweet-treat-standalone.html
