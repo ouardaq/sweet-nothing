@@ -40,7 +40,7 @@ export default async function HomePage() {
 
             <h2 className="pixel-text mt-4 text-[11px]">{product.name}</h2>
             <p className="mt-1 text-[13px] font-semibold text-ink-soft">
-              {product.category ?? 'treat'}
+              {product.flavor ?? 'treat'}
             </p>
             <p className="pixel-text mt-2 text-[11px] text-primary-d">
               {formatPrice(product.priceCents)}

@@ -13,4 +13,15 @@ describe('flavorWash', () => {
   it('falls back to the default when flavor is null', () => {
     expect(flavorWash(null)).toBe('#fdeaf1');
   });
+  it('handles multi-word display labels', () => {
+    expect(flavorWash('Red Bean')).toBe('#f7ecdc');
+  });
+
+  it('treats Soda as an alias for ramune', () => {
+    expect(flavorWash('Soda')).toBe('#e3f3fd');
+  });
+
+  it('falls back for flavours with no defined wash', () => {
+    expect(flavorWash('Trio')).toBe('#fdeaf1');
+  });
 });
