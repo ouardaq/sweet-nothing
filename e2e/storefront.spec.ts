@@ -1,16 +1,18 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
+
+const productCards = (page: Page) => page.locator('a[href^="/products/"]');
 
 test('homepage lists products', async ({ page }) => {
   await page.goto('/');
   await expect(
     page.getByRole('heading', { name: 'Sweet Nothing' }),
   ).toBeVisible();
-  await expect(page.getByRole('link')).not.toHaveCount(0);
+  await expect(productCards(page).first()).toBeVisible();
 });
 
 test('clicking a product opens its detail page', async ({ page }) => {
   await page.goto('/');
-  const firstProduct = page.getByRole('link').first();
+  const firstProduct = productCards(page).first();
   const name = (await firstProduct.locator('h2').textContent())?.trim() ?? '';
 
   await firstProduct.click();

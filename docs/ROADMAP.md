@@ -74,6 +74,11 @@ A step is not finished until all five are true:
 - Secrets in `.env` (git-ignored) and Vercel's encrypted store. Never in the repo.
 - Never commit generated files: `node_modules`, `.next`, `src/generated/prisma`, `test-results/`, `design/sweet-treat-standalone.html`
 - Schema changes only via `prisma migrate` — never hand-edited SQL
+- After **any** schema change run both `prisma migrate dev` **and** `prisma generate`, then restart
+  the dev server. `migrate` updates the database; `generate` updates the TypeScript client; the
+  client is loaded at boot so hot reload will not pick it up. Symptoms of skipping it:
+  `Unknown argument <field>` (client behind the DB) or `P2022 column does not exist`
+  (client ahead of the DB).
 - Stock changes inside a transaction so concurrent orders cannot oversell
 - Accessible markup: real `<button>`/`<a>`, labelled inputs, visible focus states
 - One primary (pink) action per view, per the design spec

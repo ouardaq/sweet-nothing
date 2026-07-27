@@ -47,6 +47,8 @@ export function PixelSprite({
       viewBox={`0 0 ${cols} ${rows}`}
       shapeRendering="crispEdges"
       style={{ display: 'block' }}
+      aria-hidden="true"
+      focusable="false"
     >
       {rects}
     </svg>
