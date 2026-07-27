@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
 import { formatPrice } from '@/lib/format';
 
+export const dynamic = 'force-dynamic';
+
 export default async function ProductPage({
   params,
 }: {

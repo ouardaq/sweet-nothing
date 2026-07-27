@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { db } from '@/lib/db';
 import { formatPrice } from '@/lib/format';
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const products = await db.product.findMany({
     orderBy: { createdAt: 'desc' },
