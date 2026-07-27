@@ -16,7 +16,7 @@ const products = [
       'Fluffy vanilla sponge cakes layered with fresh strawberries and whipped cream.',
     priceCents: 1200,
     stock: 12,
-    imageUrl: null,
+
     spriteKey: 'cupcake',
     spriteSwap: { p: '#ffc9d8', P: '#ff6f6f' },
     flavor: 'strawberry',
@@ -24,14 +24,14 @@ const products = [
     category: 'cakes',
   },
   {
-    name: 'Fudgy Chocolate Brownies',
-    slug: 'fudgy-chocolate-brownies',
+    name: 'Fudgy Chocolate Dorayaki',
+    slug: 'fudgy-chocolate-dorayaki',
     description:
-      'Rich, gooey chocolate brownies with a crackly top and a soft centre.',
+      'Rich, gooey chocolate dorayakis with a crackly top and a soft centre.',
     priceCents: 1000,
     stock: 16,
-    imageUrl: null,
     spriteKey: 'dorayaki',
+
     spriteSwap: { b: '#8a5a3c', B: '#5e3b24' },
     flavor: 'redbean',
     tag: null,
@@ -44,7 +44,7 @@ const products = [
       'Baked vanilla donuts glazed with earthy matcha and white chocolate.',
     priceCents: 1400,
     stock: 10,
-    imageUrl: null,
+
     spriteKey: 'donut',
     spriteSwap: { p: '#bfe06e', P: '#5db272' },
     flavor: 'matcha',

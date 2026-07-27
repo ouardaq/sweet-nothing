@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Press_Start_2P, Quicksand } from 'next/font/google';
 import './globals.css';
 
+import { NavBar } from '@/components/NavBar';
+import { Footer } from '@/components/Footer';
+
 const pressStart = Press_Start_2P({
   variable: '--font-press-start',
   subsets: ['latin'],
@@ -32,7 +35,11 @@ export default function RootLayout({
       lang="en"
       className={`${pressStart.variable} ${quicksand.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <NavBar />
+        <div className="flex-1">{children}</div>
+        <Footer />
+      </body>
     </html>
   );
 }
