@@ -23,3 +23,18 @@ test('unknown product slug returns 404', async ({ page }) => {
   const response = await page.goto('/products/definitely-not-real');
   expect(response?.status()).toBe(404);
 });
+
+test('shop filters by category from the URL', async ({ page }) => {
+  await page.goto('/shop?category=mochi');
+
+  await expect(page.getByRole('heading', { name: 'Treat Shop' })).toBeVisible();
+  await expect(productCards(page)).toHaveCount(5);
+  await expect(page.getByText('5 delicious things')).toBeVisible();
+});
+
+test('category cards on the home page link into the shop', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('link', { name: /Mochi/ }).first().click();
+
+  await expect(page).toHaveURL(/\/shop\?category=mochi/);
+});
