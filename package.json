@@ -24,7 +24,8 @@
     "db:seed": "tsx prisma/seed.ts",
     "db:migrate:prod": "dotenv -e .env.neon -- prisma migrate deploy",
     "db:seed:prod": "dotenv -e .env.neon -- tsx prisma/seed.ts",
-    "vercel-build": "prisma migrate deploy && next build"
+    "vercel-build": "prisma migrate deploy && next build",
+    "test:e2e:setup": "playwright install"
   },
   "dependencies": {
     "@google/genai": "^2.13.0",
