@@ -52,6 +52,16 @@ These are non-negotiable for every step.
 - One feature branch per step: `feat/design-system`, `feat/shop-page`, `feat/cart`
 - [Conventional Commits](https://www.conventionalcommits.org/): `feat:` `fix:` `chore:` `test:` `docs:` `ci:`
 - Open a PR per step, let CI pass, then merge. Never commit directly to `main`.
+- `main` is protected: PR required, `build` status check required. A red PR must never be merged —
+  CI that can be ignored is decoration. (PR #4 was merged red once; that is what prompted the rule.)
+- **After any dependency change, fully regenerate the lockfile before pushing:**
+  `rm -rf node_modules package-lock.json && npm install`. Incremental `npm install` on macOS leaves
+  the WASM-target optional deps of Tailwind v4's `@tailwindcss/oxide-wasm32-wasi` out of the
+  lockfile, and Linux `npm ci` then fails with `Missing: @emnapi/runtime@… from lock file`.
+  Do **not** try to fix this by declaring `@emnapi/core` / `@emnapi/runtime` as dependencies —
+  that hoists one version and prunes the nested pinned copies (`1.11.1` for `@rolldown/…`,
+  `1.10.0` for `@unrs/…`), which fails the same way for the opposite reason. A full regeneration
+  is the fix; CI is the only thing that catches this, since Vercel's installer is more tolerant.
 
 ### Definition of Done
 
