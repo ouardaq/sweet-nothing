@@ -74,6 +74,10 @@ A step is not finished until all five are true:
 - Secrets in `.env` (git-ignored) and Vercel's encrypted store. Never in the repo.
 - Never commit generated files: `node_modules`, `.next`, `src/generated/prisma`, `test-results/`, `design/sweet-treat-standalone.html`
 - Schema changes only via `prisma migrate` — never hand-edited SQL
+- `prisma migrate dev` only ever touches the **local** Docker database. Production (Neon) is migrated
+  by `prisma migrate deploy`, wired into the `vercel-build` script so every deploy applies pending
+  migrations before building. Symptom of forgetting: the live site 500s on database-backed pages
+  while non-database pages still return 200.
 - After **any** schema change run both `prisma migrate dev` **and** `prisma generate`, then restart
   the dev server. `migrate` updates the database; `generate` updates the TypeScript client; the
   client is loaded at boot so hot reload will not pick it up. Symptoms of skipping it:
