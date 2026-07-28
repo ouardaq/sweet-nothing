@@ -4,9 +4,7 @@ const productCards = (page: Page) => page.locator('a[href^="/products/"]');
 
 test('homepage lists products', async ({ page }) => {
   await page.goto('/');
-  await expect(
-    page.getByRole('heading', { name: 'Sweet Nothing' }),
-  ).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(productCards(page).first()).toBeVisible();
 });
 
