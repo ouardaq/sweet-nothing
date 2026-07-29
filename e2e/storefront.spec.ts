@@ -38,3 +38,17 @@ test('category cards on the home page link into the shop', async ({ page }) => {
 
   await expect(page).toHaveURL(/\/shop\?category=mochi/);
 });
+
+test('product detail shows the buy box and related items', async ({ page }) => {
+  await page.goto('/products/matcha-mochi');
+
+  await expect(
+    page.getByRole('heading', { name: 'Matcha Mochi' }),
+  ).toBeVisible();
+  await expect(page.getByText('hand-made today')).toBeVisible();
+  await expect(page.getByText('matcha flavor')).toBeVisible();
+  await expect(page.getByLabel('Increase quantity')).toBeVisible();
+  await expect(
+    page.getByRole('heading', { name: 'More like this' }),
+  ).toBeVisible();
+});
