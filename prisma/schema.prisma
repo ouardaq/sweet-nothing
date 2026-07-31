@@ -26,4 +26,27 @@ model Product {
   flavor      String?
   tag         String?
   category    String?
+
+  cartItems   CartItem[]
+}
+
+model Cart {
+  id        String     @id @default(cuid())
+  token     String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  items     CartItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  cartId    String
+  productId String
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([cartId, productId])
 }

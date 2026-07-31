@@ -52,3 +52,26 @@ test('product detail shows the buy box and related items', async ({ page }) => {
     page.getByRole('heading', { name: 'More like this' }),
   ).toBeVisible();
 });
+
+test('empty basket shows a designed state', async ({ page }) => {
+  await page.goto('/cart');
+
+  await expect(
+    page.getByRole('heading', { name: 'Your Basket', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('Your basket is empty')).toBeVisible();
+  await expect(page.getByRole('link', { name: /Browse treats/ })).toBeVisible();
+});
+
+test('adding a treat puts it in the basket', async ({ page }) => {
+  await page.goto('/products/peach-macaron');
+  await page.getByRole('button', { name: /Add 1 to basket/ }).click();
+
+  await expect(
+    page.getByRole('link', { name: /Basket, 1 item/ }),
+  ).toBeVisible();
+
+  await page.goto('/cart');
+  await expect(page.getByText('Peach Macaron')).toBeVisible();
+  await expect(page.getByText('Subtotal (1 item)')).toBeVisible();
+});

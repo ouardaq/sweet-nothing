@@ -87,7 +87,11 @@ export default async function ProductPage({
             ))}
           </ul>
 
-          <BuyBox priceCents={product.priceCents} stock={product.stock} />
+          <BuyBox
+            productId={product.id}
+            priceCents={product.priceCents}
+            stock={product.stock}
+          />
         </div>
       </div>
 
