@@ -31,7 +31,11 @@ export async function NavBar() {
             borderColor: '#e6b94a',
             boxShadow: '3px 3px 0 0 #e6b94a',
           }}
-          aria-label={count > 0 ? `Basket, ${count} items` : 'Basket, empty'}
+          aria-label={
+            count > 0
+              ? `Basket, ${count} item${count === 1 ? '' : 's'}`
+              : 'Basket, empty'
+          }
         >
           <span aria-hidden="true" className="text-[15px]">
             🧺
