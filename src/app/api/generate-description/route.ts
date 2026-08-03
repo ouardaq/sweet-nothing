@@ -2,12 +2,18 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { generateProductDescription } from '@/lib/ai';
 
+import { requireAdmin } from '@/lib/currentUser';
+
 const BodySchema = z.object({
   name: z.string().min(1, 'Product name is required'),
   keywords: z.string().min(1, 'At least one keyword is required'),
 });
 
 export async function POST(request: Request) {
+  const admin = await requireAdmin();
+  if (!admin) {
+    return NextResponse.json({ error: 'Not authorised' }, { status: 401 });
+  }
   let body: unknown;
   try {
     body = await request.json();

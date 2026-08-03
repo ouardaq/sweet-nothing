@@ -3,8 +3,12 @@ import { Logo } from './Logo';
 import { NavLink } from './NavLink';
 import { cartCount } from '@/lib/cart';
 
+import { auth } from '@/auth';
+import { LogoutButton } from './LogoutButton';
+
 export async function NavBar() {
   const count = await cartCount();
+  const session = await auth();
 
   return (
     <header
@@ -54,6 +58,16 @@ export async function NavBar() {
             </span>
           )}
         </Link>
+        {session?.user ? (
+          <div className="flex items-center gap-2.5">
+            <span className="pixel-text text-[9px] text-ink-soft">
+              hi, {session.user.name ?? 'friend'}!
+            </span>
+            <LogoutButton />
+          </div>
+        ) : (
+          <NavLink href="/login">Log in</NavLink>
+        )}
       </div>
     </header>
   );

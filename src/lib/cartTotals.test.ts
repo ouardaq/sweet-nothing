@@ -1,6 +1,26 @@
 import { describe, it, expect } from 'vitest';
 import { itemCount, subtotalCents } from './cartTotals';
 
+import { mergedQuantity } from './cartTotals';
+
+describe('mergedQuantity', () => {
+  it('sums both quantities when stock allows', () => {
+    expect(mergedQuantity(2, 3, 10)).toBe(5);
+  });
+
+  it('clamps to available stock', () => {
+    expect(mergedQuantity(4, 5, 6)).toBe(6);
+  });
+
+  it('handles a line that does not exist yet', () => {
+    expect(mergedQuantity(0, 2, 10)).toBe(2);
+  });
+
+  it('returns zero when nothing is in stock', () => {
+    expect(mergedQuantity(2, 2, 0)).toBe(0);
+  });
+});
+
 describe('subtotalCents', () => {
   it('is zero for an empty cart', () => {
     expect(subtotalCents([])).toBe(0);
