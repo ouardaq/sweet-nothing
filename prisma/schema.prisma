@@ -60,6 +60,7 @@ model User {
   passwordHash String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+  role String @default("customer")
 
   carts Cart[]
 }
