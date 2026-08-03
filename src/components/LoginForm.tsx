@@ -1,23 +1,23 @@
 'use client';
 
-import { useState, useTransition } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { mergeGuestCart } from '@/app/cart/actions';
 import { Field } from './Field';
 import { PixelButton } from './PixelButton';
 
 export function LoginForm() {
-  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [pending, startTransition] = useTransition();
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
-    startTransition(async () => {
+    try {
       const result = await signIn('credentials', {
         email,
         password,
@@ -29,9 +29,20 @@ export function LoginForm() {
         return;
       }
 
-      router.push('/');
-      router.refresh();
-    });
+      // Best effort: a basket merge must never block signing in.
+      try {
+        await mergeGuestCart();
+      } catch (mergeError) {
+        console.error('cart merge failed', mergeError);
+      }
+
+      window.location.href = '/';
+    } catch (err) {
+      console.error('login failed', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -59,9 +70,9 @@ export function LoginForm() {
         type="submit"
         size="lg"
         full
-        disabled={pending || !email || !password}
+        disabled={loading || !email || !password}
       >
-        {pending ? 'Checking…' : 'Log in ♡'}
+        {loading ? 'Checking…' : 'Log in ♡'}
       </PixelButton>
     </form>
   );

@@ -7,3 +7,12 @@ export function subtotalCents(items: TotalsItem[]): number {
 export function itemCount(items: { quantity: number }[]): number {
   return items.reduce((n, i) => n + i.quantity, 0);
 }
+
+/** Combine a guest line into an existing line, never exceeding available stock. */
+export function mergedQuantity(
+  existing: number,
+  incoming: number,
+  stock: number,
+): number {
+  return Math.min(existing + incoming, Math.max(0, stock));
+}

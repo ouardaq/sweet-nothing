@@ -3,7 +3,7 @@ import { db } from './db';
 
 export const CART_COOKIE = 'sn_cart';
 
-const COOKIE_OPTIONS = {
+export const CART_COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: 'lax' as const,
   path: '/',
@@ -36,7 +36,7 @@ export async function getOrCreateCart() {
 
   const token = crypto.randomUUID();
   const cart = await db.cart.create({ data: { token } });
-  store.set(CART_COOKIE, token, COOKIE_OPTIONS);
+  store.set(CART_COOKIE, token, CART_COOKIE_OPTIONS);
   return cart;
 }
 

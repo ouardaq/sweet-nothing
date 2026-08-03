@@ -9,6 +9,8 @@ import { passwordStrength } from '@/lib/password';
 import { Field } from './Field';
 import { PixelButton } from './PixelButton';
 
+import { mergeGuestCart } from '@/app/cart/actions';
+
 const STRENGTH_HINT = {
   soft: 'soft — add a few more characters',
   chewy: 'chewy — not bad!',
@@ -37,6 +39,7 @@ export function RegisterForm() {
       }
 
       await signIn('credentials', { email, password, redirect: false });
+      await mergeGuestCart();
       router.push('/');
       router.refresh();
     });
