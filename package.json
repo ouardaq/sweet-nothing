@@ -25,7 +25,9 @@
     "db:migrate:prod": "dotenv -e .env.neon -- prisma migrate deploy",
     "db:seed:prod": "dotenv -e .env.neon -- tsx prisma/seed.ts",
     "vercel-build": "prisma migrate deploy && next build",
-    "test:e2e:setup": "playwright install"
+    "test:e2e:setup": "playwright install",
+    "db:promote-admin": "tsx prisma/promote-admin.ts",
+    "db:promote-admin:prod": "dotenv -e .env.neon -- tsx prisma/promote-admin.ts"
   },
   "dependencies": {
     "@google/genai": "^2.13.0",
