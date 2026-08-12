@@ -28,6 +28,7 @@ model Product {
   category    String?
 
   cartItems   CartItem[]
+  orderItems OrderItem[]
 }
 
 model Cart {
@@ -63,4 +64,38 @@ model User {
   role String @default("customer")
 
   carts Cart[]
+  orders Order[]
+}
+
+
+model Order {
+  id            String   @id @default(cuid())
+  number        String   @unique
+  userId        String?
+  email         String?
+  customerName  String
+  fulfilment    String
+  address       String?
+  timing        String
+  promoCode     String?
+  subtotalCents Int
+  discountCents Int      @default(0)
+  deliveryCents Int      @default(0)
+  totalCents    Int
+  createdAt     DateTime @default(now())
+
+  user  User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items OrderItem[]
+}
+
+model OrderItem {
+  id             String @id @default(cuid())
+  orderId        String
+  productId      String?
+  name           String
+  unitPriceCents Int
+  quantity       Int
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
 }

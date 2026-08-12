@@ -154,13 +154,11 @@ export default async function CartPage() {
               <Price cents={subtotal} size={22} />
             </div>
 
-            <PixelButton size="lg" full disabled>
-              Checkout →
-            </PixelButton>
-
-            <p className="mt-3.5 text-center text-[12px] text-ink-soft">
-              checkout opens in the next step
-            </p>
+            <div className="flex flex-col">
+              <PixelLink href="/checkout" size="lg">
+                Checkout →
+              </PixelLink>
+            </div>
           </div>
 
           <p className="mt-3.5 text-center">
