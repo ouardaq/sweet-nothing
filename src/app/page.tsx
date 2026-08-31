@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
+import { ACTIVE_PRODUCT } from '@/lib/products';
 import { CATEGORIES } from '@/lib/categories';
 import { CloudsBg } from '@/components/CloudBg';
 import { HeroStat } from '@/components/HeroStat';
@@ -15,6 +16,7 @@ const STAMPS_TOTAL = 8;
 
 export default async function HomePage() {
   const products = await db.product.findMany({
+    where: ACTIVE_PRODUCT,
     orderBy: { createdAt: 'desc' },
   });
 

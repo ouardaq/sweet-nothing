@@ -27,6 +27,8 @@ model Product {
   tag         String?
   category    String?
 
+  discontinuedAt DateTime?
+
   cartItems   CartItem[]
   orderItems OrderItem[]
 }

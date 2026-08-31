@@ -94,11 +94,11 @@ A step is not finished until all five are true:
   `Unknown argument <field>` (client behind the DB) or `P2022 column does not exist`
   (client ahead of the DB).
 - Stock changes inside a transaction so concurrent orders cannot oversell
-- The seed is **declarative**: it upserts by `slug` and prunes any product whose slug is not in the
-  file, so the database matches the seed exactly. Without pruning, renaming a slug leaves an orphan
-  row (this happened once with `fudgy-chocolate-dorayaki`). **When `Order`/`CartItem` reference
-  products (step 10), swap the hard delete for a soft delete (`discontinuedAt`)** — a product in
-  someone's order history must never be removed.
+- The seed is **declarative**: it upserts by `slug` (reviving with `discontinuedAt: null`) and
+  soft-deletes any product whose slug is not in the file by stamping `discontinuedAt`. Products are
+  **never hard-deleted** — `Order`/`OrderItem` rows reference them, and order history must survive
+  catalog changes. The storefront filters on `ACTIVE_PRODUCT` (`src/lib/products.ts`) in every
+  query, and `addToCart` refuses discontinued products.
 - Accessible markup: real `<button>`/`<a>`, labelled inputs, visible focus states
 - One primary (pink) action per view, per the design spec
 

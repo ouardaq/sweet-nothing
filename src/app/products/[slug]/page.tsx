@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { db } from '@/lib/db';
+import { ACTIVE_PRODUCT } from '@/lib/products';
 import { flavorWash } from '@/lib/flavors';
 import { productAttributes } from '@/lib/product';
 import type { SpriteSwap } from '@/lib/sprites';
@@ -20,12 +21,18 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await db.product.findUnique({ where: { slug } });
+  const product = await db.product.findFirst({
+    where: { slug, ...ACTIVE_PRODUCT },
+  });
 
   if (!product) notFound();
 
   const related = await db.product.findMany({
-    where: { category: product.category, NOT: { id: product.id } },
+    where: {
+      ...ACTIVE_PRODUCT,
+      category: product.category,
+      NOT: { id: product.id },
+    },
     orderBy: { createdAt: 'desc' },
     take: 4,
   });
