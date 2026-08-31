@@ -27,7 +27,9 @@ export async function addToCart(input: {
   const { productId, quantity } = parsed.data;
 
   const product = await db.product.findUnique({ where: { id: productId } });
-  if (!product) return { ok: false as const, error: 'That treat is gone' };
+  if (!product || product.discontinuedAt) {
+    return { ok: false as const, error: 'That treat is gone' };
+  }
   if (product.stock < 1)
     return { ok: false as const, error: 'Sold out for today' };
 

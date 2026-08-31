@@ -5,7 +5,6 @@ import { flavorWash } from '@/lib/flavors';
 import { formatPrice } from '@/lib/format';
 import type { SpriteSwap } from '@/lib/sprites';
 import { CartLineControls } from '@/components/CartLineControls';
-import { PixelButton } from '@/components/PixelButton';
 import { PixelLink } from '@/components/PixelLink';
 import { PixelSprite } from '@/components/PixelSprite';
 import { Price } from '@/components/Price';

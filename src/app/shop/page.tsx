@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { db } from '@/lib/db';
+import { ACTIVE_PRODUCT } from '@/lib/products';
 import { ProductCard } from '@/components/ProductCard';
 import { PixelSprite } from '@/components/PixelSprite';
 import { SortSelect } from '@/components/SortSelect';
@@ -30,7 +31,8 @@ export default async function ShopPage({
   const sort = parseSort(sp.sort);
 
   const products = await db.product.findMany({
-    where: category === 'all' ? undefined : { category },
+    where:
+      category === 'all' ? ACTIVE_PRODUCT : { ...ACTIVE_PRODUCT, category },
     orderBy: sortToOrderBy(sort),
   });
 

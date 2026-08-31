@@ -210,18 +210,19 @@ async function main() {
   for (const product of products) {
     await prisma.product.upsert({
       where: { slug: product.slug },
-      update: product,
+      update: { ...product, discontinuedAt: null },
       create: product,
     });
   }
 
   const slugs = products.map((p) => p.slug);
-  const { count } = await prisma.product.deleteMany({
-    where: { slug: { notIn: slugs } },
+  const { count } = await prisma.product.updateMany({
+    where: { slug: { notIn: slugs }, discontinuedAt: null },
+    data: { discontinuedAt: new Date() },
   });
 
   console.log(
-    `✅ Seeded ${products.length} products${count ? `, pruned ${count} stale` : ''}`,
+    `✅ Seeded ${products.length} products${count ? `, discontinued ${count} stale` : ''}`,
   );
 }
 
